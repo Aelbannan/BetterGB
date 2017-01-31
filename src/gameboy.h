@@ -12,6 +12,7 @@ class GameBoy
 {
 	public:
 		GameBoy();
+		// Resets the gameboy
 		void Reset();
 	private:
 		Screen* screen;
@@ -20,11 +21,11 @@ class GameBoy
 		GPU* gpu;
 		Joypad* joypad;
 		
-		// Frame Limiter
-		uint8_t* ly;
-		std::chrono::high_resolution_clock::time_point frameStart;
-		bool shouldSleep;
-		float timeBalance;
+		// Frame Limiter Variables
+		uint8_t* ly; // LY (current redraw line)
+		std::chrono::high_resolution_clock::time_point frameStart; // Time frame started
+		bool shouldSleep; // Should we sleep
+		float timeBalance; // Excess/Missing time from previous frames
 	
 		void Loop();
 		bool HandleEvents();

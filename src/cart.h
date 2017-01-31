@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+/*
+ * Cart interface
+ */
 class Cart
 {
 	public:

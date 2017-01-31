@@ -3,6 +3,11 @@
 
 #include "cart.h"
 
+/*
+ * The basic GB Cart.
+ * CAN read from ROM
+ * NO RAM
+ */
 class BasicCart : public Cart
 {
 	public:

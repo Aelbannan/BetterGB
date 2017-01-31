@@ -74,6 +74,7 @@ void CPU::Reset()
 
 void CPU::Step()
 {
+	// If CPU is stopped, keep counting cycles (so graphics don't freeze)
 	if (isStopped)
 	{
 		lastInstructionCycles = 4;
@@ -81,8 +82,10 @@ void CPU::Step()
 	}
 	else
 	{
+		// Reset last cycle count
 		lastInstructionCycles = 0;
 		
+		// Manual breakpoints
 		if (registers.pc == 0x3804)//0x361A)//0x98E)
 		{
 			//MEM_DEBUG = true;
@@ -110,6 +113,7 @@ void CPU::Step()
 		// Handle interrupts
 		ExecuteInterrupts();
 		
+		// If CPU is halted, add cycles (graphics)
 		if (isHalted)
 		{
 			lastInstructionCycles = 4;
@@ -209,8 +213,6 @@ void CPU::ExecuteOpcode()
 		}
 	}
 	
-	//*log << opcode;
-	
 	// DEBUG
 	if (OPCODE_DEBUG)
 	{
@@ -246,6 +248,7 @@ void CPU::ExecuteOpcode()
 	// Execute instruction
 	(this->*(instruction.function))();
 		
+	// DEBUG
 	if (OPCODE_DEBUG)
 	{
 		printf("%i CYCLES\n\n", lastInstructionCycles);
@@ -269,6 +272,7 @@ void CPU::UpdateTimer()
 	{
 		int freq;
 		
+		// Get desired freq (based on TAC_SELECT)
 		switch (*tac & TAC_SELECT)
 		{
 			case 0: freq = 1024; break;
@@ -277,6 +281,7 @@ void CPU::UpdateTimer()
 			case 3: freq = 256; break;
 		}
 		
+		// If time to interrupt
 		if (timerCycles > freq)
 		{
 			if (*tima == 0xFF)
@@ -289,6 +294,7 @@ void CPU::UpdateTimer()
 				*tima += 1;
 			}
 			
+			// reset cycle count
 			timerCycles -= freq;
 		}
 	}

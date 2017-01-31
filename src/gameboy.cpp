@@ -33,6 +33,7 @@ GameBoy::GameBoy()
 		#if _WIN32		
 		OPENFILENAME ofn;
 
+		// Get a filename to open
 		ZeroMemory(&ofn, sizeof(OPENFILENAME));
 		ofn.lStructSize = sizeof(OPENFILENAME);
 		ofn.hwndOwner = NULL;
